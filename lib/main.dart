@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod_practice/UI/synchro_page.dart';
+import 'package:flutter_riverpod_practice/UI/todo_page.dart';
 import 'package:flutter_riverpod_practice/firebase_options.dart';
 import 'package:flutter_riverpod_practice/home.dart';
 
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Home(),
+      home: const TodoPage(),
     );
   }
 }
