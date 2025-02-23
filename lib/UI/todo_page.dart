@@ -33,7 +33,8 @@ class _TodoPageState extends ConsumerState<TodoPage> {
             height: 500,
             child: Center(
               child: switch (todosAsyncValue) {
-                AsyncData(:final value) => ListView.builder(
+                AsyncData(:final value) => ListView.separated(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     itemCount: value.length,
                     itemBuilder: (context, index) {
                       final todo = value[index];
@@ -45,14 +46,31 @@ class _TodoPageState extends ConsumerState<TodoPage> {
                           );
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             border: Border.all(),
                           ),
-                          child: Text(todo.content),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const Text("投稿者名："),
+                                  Text(todo.postName),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  const Text("内容："),
+                                  Text(todo.content),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       );
-                    }),
+                    },
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 10)),
                 AsyncError() =>
                   const Text('Oops, something unexpected happened'),
                 _ => const CircularProgressIndicator(),
