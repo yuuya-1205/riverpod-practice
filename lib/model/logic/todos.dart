@@ -15,7 +15,7 @@ class TodosNotifier extends _$TodosNotifier {
   ///自分自身の状態を決める＝build=初期化にほぼ近い。＝設計図。
   ///プライベート＝外から見れない。
   ///今回の管理対象はToDo一覧。
-  Future<List<Todo>> build() async {
+  Future<List<Todo>> build(String id) async {
     return ref.watch(todoRepositoryProvider).fetchTodos();
   }
 
