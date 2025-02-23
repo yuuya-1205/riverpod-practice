@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod_practice/UI/todo_detail_page.dart';
 import 'package:flutter_riverpod_practice/model/logic/todos.dart';
 
 class TodoPage extends ConsumerStatefulWidget {
@@ -22,10 +23,8 @@ class _TodoPageState extends ConsumerState<TodoPage> {
 
   @override
   Widget build(BuildContext context) {
-    /// ここにはwatch
-    const id = "2";
-    final todosAsyncValue = ref.watch(todosNotifierProvider);
-    //  final result = ref.watch(fetchTodoListProvider);
+    final todosAsyncValue =
+        ref.watch(todosNotifierProvider("3S7UyC57mt138137mc5m"));
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -39,8 +38,11 @@ class _TodoPageState extends ConsumerState<TodoPage> {
                     itemBuilder: (context, index) {
                       final todo = value[index];
                       return GestureDetector(
-                        onTap: () {
-                          /// ここにdocumentIdを引数で渡してDetailページに遷移する。
+                        onTap: () async {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => const TodoDetailPage()),
+                          );
                         },
                         child: Container(
                           padding: const EdgeInsets.all(2),
@@ -76,7 +78,7 @@ class _TodoPageState extends ConsumerState<TodoPage> {
                   child: const Text("投稿"),
                   onPressed: () async {
                     ///実行する時にnotifierを参照する、
-                    await ref.read(todosNotifierProvider.notifier).addTodo(
+                    await ref.read(todosNotifierProvider("").notifier).addTodo(
                           postName: _titleController.text,
                           content: _contentController.text,
                         );
