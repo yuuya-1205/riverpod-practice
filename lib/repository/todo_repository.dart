@@ -18,4 +18,20 @@ class TodoRepository {
         snapshot.docs.map((doc) => Todo.fromJson(doc.data())).toList();
     return todoList;
   }
+
+  Future<Todo> fetchTodo(String documentId) async {
+    final firebase = _ref.read(firebaseFirestoreInstanceProvider);
+    final snapshot = await firebase.collection("todo").doc(documentId).get();
+    final data = snapshot.data();
+    final todo = Todo.fromJson(data!);
+    return todo;
+  }
+
+  Future<List<String>> fetchDocumentId() async {
+    final firebase = _ref.read(firebaseFirestoreInstanceProvider);
+    final snapshots = firebase.collection("todo").get();
+    final snap = await snapshots;
+    final listId = snap.docs.map((doc) => doc.id).toList();
+    return listId;
+  }
 }
