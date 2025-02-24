@@ -84,6 +84,64 @@ void main() {
       });
     },
   );
+
+  /// 前提：Todo一覧が取得できていること。
+  /// 期待値：Todo一覧に任意に作成したTodoが１つ追加されていること。。
+  test("addTodoのテスト", () async {
+    // スタブ
+    when(mockTodoRepository.fetchTodos()).thenAnswer(
+      /// これがどんな挙動をしたいか決める。
+      /// リハーサルのイメージ
+      (_) async => [
+        Todo(
+          todoId: "1",
+          postName: "こん",
+          content: "おは",
+        ),
+        Todo(
+          todoId: "2",
+          postName: "こん",
+          content: "おは",
+        ),
+      ],
+    );
+    // dartの世界のrefみたいなもの　DI
+    final container = createContainer(overrides: [
+      todoRepositoryProvider.overrideWith((_) => mockTodoRepository)
+    ]);
+    //はじめはローディング中である。
+    expect(
+        container.read(todosNotifierProvider), isA<AsyncLoading<List<Todo>>>());
+
+    // todo一覧の取得を完了する。
+    final todos = await container.read(todosNotifierProvider.future);
+
+    // mockにaddする関数。
+    await container.read(todosNotifierProvider.notifier).addTodo(
+          postName: "うし",
+          content: "おはよう",
+        );
+
+    // 取得されたTodo一覧が期待通りであることを検証する。
+    expect(todos, [
+      Todo(
+        todoId: "1",
+        postName: "こん",
+        content: "おは",
+      ),
+      Todo(
+        todoId: "2",
+        postName: "こん",
+        content: "おは",
+      ),
+      //　これが追加されることを確認する。
+      Todo(
+        todoId: "3",
+        postName: "うし",
+        content: "おはよう",
+      ),
+    ]);
+  });
   // test(
   //   'fetch TodoList ',
   //   () async {
