@@ -75,8 +75,7 @@ class _TodoPageState extends ConsumerState<TodoPage> {
                         ),
                       );
                     },
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 10)),
+                    separatorBuilder: (_, __) => const SizedBox(height: 10)),
                 AsyncError() =>
                   const Text('Oops, something unexpected happened'),
                 _ => const CircularProgressIndicator(),
