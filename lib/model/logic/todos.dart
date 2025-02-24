@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod_practice/model/todo/todo.dart';
-import 'package:flutter_riverpod_practice/repository/firebase/firebase_firestore_instance.dart';
 import 'package:flutter_riverpod_practice/repository/todo_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,19 +11,14 @@ class TodosNotifier extends _$TodosNotifier {
     return ref.watch(todoRepositoryProvider).fetchTodos();
   }
 
+//　todosに投稿を1つ増やす副作用
   Future<void> addTodo({
     required String postName,
     required String content,
   }) async {
-    final firebase = ref.read(firebaseFirestoreInstanceProvider);
-    final todo = Todo(
-      postName: postName,
-      content: content,
-    );
-    await firebase.collection("todo").add(
-          /// Firerbaseに保存する際はjsonの形式にしたいからtoJsonをつける。
-          todo.toJson(),
-        );
+    await ref
+        .watch(todoRepositoryProvider)
+        .addTodo(postName: postName, content: content);
 
     ref.invalidateSelf();
   }
