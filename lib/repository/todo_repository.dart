@@ -32,4 +32,17 @@ class TodoRepository {
     });
     return todo;
   }
+
+  Future<void> addTodo({
+    required String postName,
+    required String content,
+  }) async {
+    final firebase = _ref.read(firebaseFirestoreInstanceProvider);
+    await firebase.collection("todo").add(
+      {
+        "postName": postName,
+        "content": content,
+      },
+    );
+  }
 }
