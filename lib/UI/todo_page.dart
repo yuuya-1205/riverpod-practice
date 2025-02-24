@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod_practice/UI/todo_detail_page.dart';
 import 'package:flutter_riverpod_practice/model/logic/todos.dart';
+import 'package:flutter_riverpod_practice/repository/todo_repository.dart';
 
 class TodoPage extends ConsumerStatefulWidget {
   const TodoPage({super.key});
@@ -23,9 +24,11 @@ class _TodoPageState extends ConsumerState<TodoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final todosAsyncValue =
-        ref.watch(todosNotifierProvider("3S7UyC57mt138137mc5m"));
+    final todosAsyncValue = ref.watch(todosNotifierProvider);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("ToDo一覧"),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -40,9 +43,15 @@ class _TodoPageState extends ConsumerState<TodoPage> {
                       final todo = value[index];
                       return GestureDetector(
                         onTap: () async {
+                          final documentIdList = await ref
+                              .read(todoRepositoryProvider)
+                              .fetchDocumentId();
+                          final documentId = documentIdList[index];
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) => const TodoDetailPage()),
+                                builder: (context) => TodoDetailPage(
+                                      documentId: documentId,
+                                    )),
                           );
                         },
                         child: Container(
@@ -96,7 +105,7 @@ class _TodoPageState extends ConsumerState<TodoPage> {
                   child: const Text("投稿"),
                   onPressed: () async {
                     ///実行する時にnotifierを参照する、
-                    await ref.read(todosNotifierProvider("").notifier).addTodo(
+                    await ref.read(todosNotifierProvider.notifier).addTodo(
                           postName: _titleController.text,
                           content: _contentController.text,
                         );
