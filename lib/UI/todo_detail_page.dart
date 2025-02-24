@@ -5,14 +5,15 @@ import 'package:flutter_riverpod_practice/model/logic/todo.dart';
 class TodoDetailPage extends ConsumerWidget {
   const TodoDetailPage({
     super.key,
-    required this.documentId,
+    required this.todoId,
   });
 
-  final String documentId;
+  final String todoId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todoAsyncValue = ref.watch(todoNotifierProvider(documentId));
+    ///TODO ここの変更を行う（Switch文に変更する。）
+    final todoAsyncValue = ref.watch(todoNotifierProvider(todoId));
     return Scaffold(
       appBar: AppBar(
         title: const Text("投稿詳細"),
@@ -26,22 +27,27 @@ class TodoDetailPage extends ConsumerWidget {
               decoration: BoxDecoration(
                 border: Border.all(),
               ),
-              child: Column(
-                children: [
-                  Row(
+              child: switch (todoAsyncValue) {
+                AsyncData(:final value) => Column(
                     children: [
-                      const Text("投稿者名："),
-                      Text(todoAsyncValue.value?.postName ?? ""),
+                      Row(
+                        children: [
+                          const Text("投稿者名："),
+                          Text(value.postName),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Text("内容："),
+                          Text(value.content),
+                        ],
+                      ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      const Text("内容："),
-                      Text(todoAsyncValue.value?.content ?? ""),
-                    ],
-                  ),
-                ],
-              ),
+                AsyncError() =>
+                  const Text('Oops, something unexpected happened'),
+                _ => const CircularProgressIndicator(),
+              },
             ),
           ],
         ),
