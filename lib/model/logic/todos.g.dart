@@ -8,11 +8,7 @@ part of 'todos.dart';
 
 String _$todosNotifierHash() => r'9de86f59f2315f3453b4c5cc5c98ddaeb1342de7';
 
-/// クラスのnotifierと言う。
-/// 違い副作用メソッド　publicメソッド
-///
-///
-/// Copied from [TodosNotifier].
+/// See also [TodosNotifier].
 @ProviderFor(TodosNotifier)
 final todosNotifierProvider =
     AutoDisposeAsyncNotifierProvider<TodosNotifier, List<Todo>>.internal(
