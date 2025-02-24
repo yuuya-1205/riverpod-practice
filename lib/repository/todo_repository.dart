@@ -11,6 +11,7 @@ class TodoRepository {
   const TodoRepository(this._ref);
   final Ref _ref;
 
+// Todoのリストを取得するロジック
   Future<List<Todo>> fetchTodos() async {
     final firebase = _ref.read(firebaseFirestoreInstanceProvider);
     final snapshot = await firebase.collection("todo").get();
@@ -23,6 +24,7 @@ class TodoRepository {
     return todoList;
   }
 
+// Todoを取得するロジック
   Future<Todo> fetchTodo(String documentId) async {
     final firebase = _ref.read(firebaseFirestoreInstanceProvider);
     final snapshot = await firebase.collection("todo").doc(documentId).get();
@@ -33,6 +35,7 @@ class TodoRepository {
     return todo;
   }
 
+// Todoを追加するロジック
   Future<void> addTodo({
     required String postName,
     required String content,
