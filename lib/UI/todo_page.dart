@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod_practice/UI/todo_detail_page.dart';
 import 'package:flutter_riverpod_practice/model/logic/todos.dart';
-import 'package:flutter_riverpod_practice/repository/todo_repository.dart';
 
 class TodoPage extends ConsumerStatefulWidget {
   const TodoPage({super.key});
@@ -42,16 +41,14 @@ class _TodoPageState extends ConsumerState<TodoPage> {
                     itemBuilder: (context, index) {
                       final todo = value[index];
                       return GestureDetector(
+                        // Todo detailページに画面遷移する。
                         onTap: () async {
-                          final documentIdList = await ref
-                              .read(todoRepositoryProvider)
-                              .fetchDocumentId();
-                          final documentId = documentIdList[index];
-                          Navigator.of(context).push(
+                          await Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) => TodoDetailPage(
-                                      documentId: documentId,
-                                    )),
+                              builder: (context) => TodoDetailPage(
+                                todoId: todo.todoId,
+                              ),
+                            ),
                           );
                         },
                         child: Container(
