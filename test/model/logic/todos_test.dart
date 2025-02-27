@@ -34,6 +34,7 @@ void main() {
     mockTodoRepository = MockTodoRepository();
   });
   // setUpAllについて調べる。
+
   group(
     "TodosNotifierのテスト",
     () {
@@ -82,6 +83,9 @@ void main() {
           ),
         ]);
       });
+      tearDown(() {
+        mockTodoRepository;
+      });
     },
   );
 
@@ -92,19 +96,11 @@ void main() {
     when(mockTodoRepository.fetchTodos()).thenAnswer(
       /// これがどんな挙動をしたいか決める。
       /// リハーサルのイメージ
-      (_) async => [
-        Todo(
-          todoId: "1",
-          postName: "こん",
-          content: "おは",
-        ),
-        Todo(
-          todoId: "2",
-          postName: "こん",
-          content: "おは",
-        ),
-      ],
+
+      // ここは最初『空』のリストにしておく。
+      (_) async => [],
     );
+
     // dartの世界のrefみたいなもの　DI
     final container = createContainer(overrides: [
       todoRepositoryProvider.overrideWith((_) => mockTodoRepository)
@@ -116,29 +112,30 @@ void main() {
     // todo一覧の取得を完了する。
     final todos = await container.read(todosNotifierProvider.future);
 
+    // 現状、空のリストいうことを確認する。
+    expect(todos, []);
+
     // mockにaddする関数。
     await container.read(todosNotifierProvider.notifier).addTodo(
           postName: "うし",
           content: "おはよう",
         );
 
-    // 取得されたTodo一覧が期待通りであることを検証する。
-    expect(todos, [
+    // addTodoした後にリストを取得する。
+    final addTodoList = await container.read(todosNotifierProvider.future);
+
+    // 取得されたTodo一覧が期待通りであることを検証する。ここがエラーになる。
+    /// 考えられること
+    /// addTodoでそもそも追加されていない。
+    /// addTodo関数
+
+    expect(addTodoList, [
       Todo(
-        todoId: "1",
+        //idがないって怒られる。
+        //これをどうすればいいかわからない。
+        todoId: '',
         postName: "こん",
         content: "おは",
-      ),
-      Todo(
-        todoId: "2",
-        postName: "こん",
-        content: "おは",
-      ),
-      //　これが追加されることを確認する。
-      Todo(
-        todoId: "3",
-        postName: "うし",
-        content: "おはよう",
       ),
     ]);
   });
@@ -179,3 +176,7 @@ void main() {
   //   },
   // );
 }
+
+/// 質問
+/// なんでsetUpAllを使わないのか？
+/// 使い回した方が良くないか？
