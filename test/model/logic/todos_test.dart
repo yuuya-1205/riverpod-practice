@@ -83,9 +83,6 @@ void main() {
           ),
         ]);
       });
-      tearDown(() {
-        mockTodoRepository;
-      });
     },
   );
 
@@ -100,7 +97,11 @@ void main() {
       // ここは最初『空』のリストにしておく。
       (_) async => [],
     );
-
+    when(mockTodoRepository.addTodo(postName: 'うし', content: 'こんばんは'))
+        .thenAnswer(
+      // モックの世界では何もしないようにした（void）だから（スタッブ）
+      (_) async => () {},
+    );
     // dartの世界のrefみたいなもの　DI
     final container = createContainer(overrides: [
       todoRepositoryProvider.overrideWith((_) => mockTodoRepository)
@@ -118,8 +119,20 @@ void main() {
     // mockにaddする関数。
     await container.read(todosNotifierProvider.notifier).addTodo(
           postName: "うし",
-          content: "おはよう",
+          content: "こんばんは",
         );
+
+    //ここでスタッブを更新しないといけない
+    when(mockTodoRepository.fetchTodos()).thenAnswer(
+      // ここは一件ないといけない。
+      (_) async => [
+        Todo(
+          todoId: "1",
+          postName: 'うし',
+          content: 'こんばんは',
+        ),
+      ],
+    );
 
     // addTodoした後にリストを取得する。
     final addTodoList = await container.read(todosNotifierProvider.future);
@@ -133,50 +146,15 @@ void main() {
       Todo(
         //idがないって怒られる。
         //これをどうすればいいかわからない。
-        todoId: '',
-        postName: "こん",
-        content: "おは",
+        todoId: '1',
+        postName: "うし",
+        content: "こんばんは",
       ),
     ]);
   });
-  // test(
-  //   'fetch TodoList ',
-  //   () async {
-  //     final container = createContainer();
-  //     final todoNotifier = await container
-  //         .read(todoNotifierProvider("3S7UyC57mt138137mc5m").future);
-  //     final postName = todoNotifier.postName;
-  //     final content = todoNotifier.content;
-  //     expect(
-  //       postName, // actual 実際の値。今回は"Hello world"
-  //       'うし', // matcher 期待する値　今回は"Hello world"
-  //     );
-  //     expect(
-  //       content, // actual 実際の値。今回は"Hello world"
-  //       'こんばんは', // matcher 期待する値　今回は"Hello world"
-  //     );
-  //   },
-  // );
-  // test(
-  //   'documentId ',
-  //   () async {
-  //     final container = createContainer();
-  //     final todoNotifier = await container
-  //         .read(todoNotifierProvider("3S7UyC57mt138137mc5m").future);
-  //     final postName = todoNotifier.postName;
-  //     final content = todoNotifier.content;
-  //     expect(
-  //       postName, // actual 実際の値。今回は"Hello world"
-  //       'うし', // matcher 期待する値　今回は"うし"
-  //     );
-  //     expect(
-  //       content, // actual 実際の値。今回は"Hello world"
-  //       'こんばんは', // matcher 期待する値　今回は"こんばんは"
-  //     );
-  //   },
-  // );
 }
 
 /// 質問
 /// なんでsetUpAllを使わないのか？
-/// 使い回した方が良くないか？
+///   これは好みでどっちでもいいらしい。
+/// 　使い回した方が良くないか？
