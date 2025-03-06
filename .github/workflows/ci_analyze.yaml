@@ -18,6 +18,12 @@ jobs:
         with:
           flutter-version: 3.24.1
           channel: stable
+      
+      - name: check format
+        run: dart format -o none --set-exit-if-changed $(find lib/ test/ -name "*.dart" -not \( -name "*.*freezed.dart" -o -name "*.*g.dart" -o -name "*.*gr.dart" -o -name "*.*gen.dart" -o -name "*.*mocks.dart" \) )
+
+
+
 
       - name: analyze
         run: flutter analyze
