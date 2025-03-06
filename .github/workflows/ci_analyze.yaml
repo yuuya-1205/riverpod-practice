@@ -1,18 +1,11 @@
 name: '[CI] Analyze'
-
-# いつこれが実行されるか？トリガーの定義。
 on:
   pull_request:
-  # 新しいプルリクを作った時と新しいコミットを作ったとき
     types: [opened, synchronize]
-
-# どんな作業をするか？ってやつ。今はanalyzeのみ。
 jobs:
   analyze:
-  # 空っぽの実行環境を借りる。
     runs-on: ubuntu-latest
 
- # jobsの中に複数のstepを記述できる。
     steps:
       - name: Hello world
         run: echo "Hello, world!"
