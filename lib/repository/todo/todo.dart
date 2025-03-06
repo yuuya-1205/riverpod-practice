@@ -11,9 +11,10 @@ part 'todo.g.dart';
 Future<List<Todo>> fetchTodoList(Ref ref) async {
   return ref.watch(todoRepositoryProvider).fetchTodos();
 }
+
 /// これは業務っぽくない。
 /// これはテストができる作りではない。
-/// 
+///
 // @riverpod
 // Future<List<Todo>> fetchTodoList(Ref ref) async {
 //   final firebase = ref.read(firebaseFirestoreInstanceProvider);
