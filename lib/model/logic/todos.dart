@@ -43,6 +43,7 @@ class TodosNotifier extends _$TodosNotifier {
   /// 管理したいのは何かを明確にする。
   /// ここは業務ロジック。notifier=業務ロジック/＝状態管理。
 }
+
 /// FlutterはUI
 /// BuildContextとかないから。
 /// ツリーの話が出てきてないからDart

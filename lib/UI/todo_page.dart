@@ -23,7 +23,6 @@ class _TodoPageState extends ConsumerState<TodoPage> {
   @override
   Widget build(BuildContext context) {
     /// ここにはwatch
-    const id = "2";
     final todosAsyncValue = ref.watch(todosNotifierProvider);
     //  final result = ref.watch(fetchTodoListProvider);
     return Scaffold(

@@ -85,5 +85,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'todoappriverpod.firebasestorage.app',
     measurementId: 'G-RLD4G7MED9',
   );
-
 }
