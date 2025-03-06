@@ -19,7 +19,7 @@ jobs:
           flutter-version: 3.24.1
           channel: stable
 
-      - name: check Flutter ver
-        run: flutter --version
+      - name: analyze
+        run: flutter analyze
        
         
