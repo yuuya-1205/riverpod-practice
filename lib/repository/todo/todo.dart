@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod_practice/model/todo/todo.dart';
-import 'package:flutter_riverpod_practice/repository/firebase/firebase_firestore_instance.dart';
 import 'package:flutter_riverpod_practice/repository/todo_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
