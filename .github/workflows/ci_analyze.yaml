@@ -9,3 +9,17 @@ jobs:
     steps:
       - name: Hello world
         run: echo "Hello, world!"
+      
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2.8.0
+        with:
+          flutter-version: 3.24.1
+          channel: stable
+
+      - name: check Flutter ver
+        run: flutter --version
+       
+        
