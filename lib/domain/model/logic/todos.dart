@@ -10,6 +10,8 @@ class TodosNotifier extends _$TodosNotifier {
   @override
   Future<List<Todo>> build() async {
     final result = await ref.watch(todoDtoRepositoryProvider).fetchTodoList();
+
+    /// ここでブレイクポイントを貼ってもこないからエラーになっている？
     final todoList = result.map(Todo.fromTodoDto).toList();
     return todoList;
   }
