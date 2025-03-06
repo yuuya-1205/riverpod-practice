@@ -6,13 +6,9 @@ part of 'todos.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$todosNotifierHash() => r'9de86f59f2315f3453b4c5cc5c98ddaeb1342de7';
+String _$todosNotifierHash() => r'2c8c0aef9dfc105dbbc928b8ccff82944f97b38c';
 
-/// クラスのnotifierと言う。
-/// 違い副作用メソッド　publicメソッド
-///
-///
-/// Copied from [TodosNotifier].
+/// See also [TodosNotifier].
 @ProviderFor(TodosNotifier)
 final todosNotifierProvider =
     AutoDisposeAsyncNotifierProvider<TodosNotifier, List<Todo>>.internal(
